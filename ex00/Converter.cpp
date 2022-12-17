@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 11:39:18 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 11:57:59 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	Converter::run( void )
 	std::cout << "_input is: " << _input << std::endl;
 	int	type = find_type(); 
 	std::cout << "type is: " << type << std::endl;
-
+	convert( type );
 }
 
 int		Converter::find_type( void )
@@ -68,6 +68,10 @@ int		Converter::find_type( void )
 		else
 	 		return 0;
 	}
+	if ( _input == "-inff" || _input == "+inff" || _input == "nanf" )
+		return FLOAT ;
+	else if ( _input == "-inf" || _input == "+inf" || _input == "nan" )
+		return DOUBLE ;
 	while ( i < len )
 	{
 		if ( isdigit( _input[i]) )
@@ -84,6 +88,30 @@ int		Converter::find_type( void )
 	if (has_digits && !has_decimal)
 		return INT ;
 	return UNSUPPORTED ;
+}
+
+void	Converter::convert( int type )
+{
+	switch ( type )
+	{
+		case UNSUPPORTED:
+			std::cout << "Error: unsupported string" << std::endl;
+			break;
+		case CHAR:
+			std::cout << _input << " is a char" << std::endl;
+			break;
+		case INT:
+			std::cout << _input << " is an int " << std::endl;
+			break;
+		case FLOAT:
+			std::cout << _input << " is a float" << std::endl;
+			break;
+		case DOUBLE:
+			std::cout << _input << " is a double" << std::endl;
+			break;
+		default:
+			std::cout << "Error: unknown type" << std::endl;
+	}
 }
 
 void	Converter::show_all ( void )

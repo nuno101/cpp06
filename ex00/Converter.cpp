@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 19:02:54 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 19:10:10 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ void	Converter::convert_float( void )
 	}
 	int		i = static_cast<int>( f );
 	double	d = static_cast<double>( f );
-	if ( i == 0 )
+	if ( isprint( i ))
 		std::cout << "char: Non displayable" << std::endl;
 	else
 		std::cout << "char: " << static_cast<char>( f ) << std::endl;
@@ -254,7 +254,7 @@ void	Converter::convert_double( void )
 	}
 	int		i = static_cast<int>( d );
 	float	f = static_cast<float>( d );
-	if ( i == 0 )
+	if ( isprint( i ))
 		std::cout << "char: Non displayable" << std::endl;
 	else
 		std::cout << "char: " << static_cast<char>( d ) << std::endl;

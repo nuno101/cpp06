@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:37:04 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 17:21:01 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:30:48 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ class	Converter
 {
 	private:
 		std::string	_input;
+		char		_char;
+		int			_int;
+		float		_float;
+		double		_double;
 
 	public:
 		Converter( std::string str);
@@ -42,6 +46,7 @@ class	Converter
 		void	convert_int( void );
 		void	convert_float( void );
 		void	convert_double( void );
+		void	show_all( void );
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 19:10:10 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:43:54 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		Converter::is_int( int len )
 {
 	int	i = 0;
 
-	if ( _input[0] == '-' )
+	if ( _input[0] == '-' ||  _input[0] == '+' )
 		i++;
 	while ( i < len )
 	{
@@ -74,7 +74,7 @@ int		Converter::is_float_or_double( int len )
 {
 	int	i = 0;
 
-	if ( _input[0] == '-' )
+	if ( _input[0] == '-' ||  _input[0] == '+' )
 		i++;
 	while ( i < len )
 	{
@@ -172,10 +172,9 @@ void	Converter::convert_char( void )
 
 void	Converter::convert_int( void )
 {
-	int	i;
 	try
 	{
-		i = static_cast<int>( std::stoi( _input ));
+		_int  = static_cast<int>( std::stoi( _input ));
 	}
 	catch ( std::out_of_range & e )
 	{
@@ -183,35 +182,27 @@ void	Converter::convert_int( void )
 		std::cout << "Can't convert integer. Exiting ..." << std::endl;
 		exit(0);
 	}
-	float	f = static_cast<float>( i );
-	double	d = static_cast<double>( i );
-
-	if ( isprint( i ))
-		std::cout << "char: " << static_cast<char>( i ) << std::endl;
-	else
-		std::cout << "char: Non displayable" << std::endl;
-	std::cout << "int: " << i << std::endl;
-	std::cout.precision(1);
-	std::cout << std::fixed;
-	std::cout << "float: " << f << "f" <<std::endl;
-	std::cout << "double: " << d << std::endl;
+	_float = static_cast<float>( _int );
+	_double = static_cast<double>( _int );
+	if ( isprint( _int ))
+		_char = static_cast<char>( _int );
+	show_all();
 }
 
 void	Converter::convert_float( void )
 {
-	float	f;
-
 	if ( _input == "-inff" || _input == "+inff" || _input == "nanf" )
 	{
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int : impossible" << std::endl;
 		std::cout << "float: " << _input << std::endl;
-		//TODO
-		//std::cout << "double: " << d << std::endl;
+		std::cout << "double: " << _input.substr(0, _input.length() - 1) << std::endl;
+		return ;
 	}
+
 	try
 	{
-		f = static_cast<float>( std::stof( _input ));
+		_float = static_cast<float>( std::stof( _input ));
 	}
 	catch ( std::out_of_range & e )
 	{
@@ -219,32 +210,27 @@ void	Converter::convert_float( void )
 		std::cout << "Can't convert float. Exiting ..." << std::endl;
 		exit(0);
 	}
-	int		i = static_cast<int>( f );
-	double	d = static_cast<double>( f );
-	if ( isprint( i ))
-		std::cout << "char: Non displayable" << std::endl;
-	else
-		std::cout << "char: " << static_cast<char>( f ) << std::endl;
-	std::cout << "int: " << i << std::endl;
-	std::cout.precision(1);
-	std::cout << std::fixed;
-	std::cout << "float: " << f << "f" <<std::endl;
-	std::cout << "double: " << d << std::endl;
+	_int = static_cast<int>( _float );
+	_double = static_cast<double>( _float );
+	if ( isprint( _int ))
+		_char = static_cast<char>( _float );
+	show_all();
 }
 
 void	Converter::convert_double( void )
 {
-	double	d;
 	if ( _input == "-inf" || _input == "+inf" || _input == "nan" )
 	{
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int : impossible" << std::endl;
 		std::cout << "float: " << _input << "f" << std::endl;
 		std::cout << "double: " << _input << std::endl;
+		return ;
 	}
+
 	try
 	{
-		d = static_cast<double>( std::stod( _input ));
+		_double = static_cast<double>( std::stod( _input ));
 	}
 	catch ( std::out_of_range & e )
 	{
@@ -252,15 +238,22 @@ void	Converter::convert_double( void )
 		std::cout << "Can't convert double. Exiting ..." << std::endl;
 		exit(0);
 	}
-	int		i = static_cast<int>( d );
-	float	f = static_cast<float>( d );
-	if ( isprint( i ))
+	_int = static_cast<int>( _double );
+	if ( isprint( _int ))
+		_char = static_cast<char>( _double );
+	_float = static_cast<float>( _double );
+	show_all();
+}
+
+void	Converter::show_all( void )
+{
+	if ( !isprint( _int ))
 		std::cout << "char: Non displayable" << std::endl;
 	else
-		std::cout << "char: " << static_cast<char>( d ) << std::endl;
-	std::cout << "int: " << i << std::endl;
+		std::cout << "char: " << static_cast<char>( _char ) << std::endl;
+	std::cout << "int: " << _int << std::endl;
 	std::cout.precision(1);
 	std::cout << std::fixed;
-	std::cout << "float: " << f << "f" <<std::endl;
-	std::cout << "double: " << d << std::endl;
+	std::cout << "float: " << _float << "f" <<std::endl;
+	std::cout << "double: " << _double << std::endl;
 }

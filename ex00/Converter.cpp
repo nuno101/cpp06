@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 11:57:59 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 15:28:58 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		Converter::find_type( void )
 	int	i = 0;
 	int	len = _input.length();
 	bool has_digits = false;
-	bool has_decimal = false;
+	bool has_decimals = false;
 
 	if ( len == 0 )
 	{
@@ -78,14 +78,14 @@ int		Converter::find_type( void )
 			has_digits = true;
 		else if ( _input[i] =='.' )
 		{
-			if ( has_decimal == false )
-				has_decimal = true;
+			if ( has_decimals == false )
+				has_decimals = true;
 			else // found two dots
 				return UNSUPPORTED ;
 		}
 		i++;
 	}
-	if (has_digits && !has_decimal)
+	if (has_digits && !has_decimals)
 		return INT ;
 	return UNSUPPORTED ;
 }
@@ -98,24 +98,101 @@ void	Converter::convert( int type )
 			std::cout << "Error: unsupported string" << std::endl;
 			break;
 		case CHAR:
-			std::cout << _input << " is a char" << std::endl;
+			if ( VERBOSE )
+				std::cout << _input << " is a char" << std::endl;
+			convert_char();
 			break;
 		case INT:
-			std::cout << _input << " is an int " << std::endl;
+			if ( VERBOSE )
+				std::cout << _input << " is an int " << std::endl;
+			convert_int();
 			break;
 		case FLOAT:
-			std::cout << _input << " is a float" << std::endl;
+			if ( VERBOSE )
+				std::cout << _input << " is a float" << std::endl;
+			convert_float();
 			break;
 		case DOUBLE:
-			std::cout << _input << " is a double" << std::endl;
+			if ( VERBOSE )
+				std::cout << _input << " is a double" << std::endl;
+			convert_double();
 			break;
 		default:
 			std::cout << "Error: unknown type" << std::endl;
 	}
 }
 
-void	Converter::show_all ( void )
+/*
+ * each concert_type function converts the user input string to the type
+ * and to the other types using static_cast's
+ */
+void	Converter::convert_char( void )
 {
-	std::cout << "_input: " << _input << std::endl;
-	std::cout << "char: " << _char << std::endl;
+	char	c = static_cast<char>( _input[0] );
+	int		i = static_cast<int>( _input[0] );
+	float	f = static_cast<float>( _input[0] );
+	double	d = static_cast<double>( _input[0] );
+	std::cout << "char: " << c << std::endl;
+	std::cout << "int: " << i << std::endl;
+	std::cout.precision(1);
+	std::cout << std::fixed;
+	std::cout << "float: " << f << "f" << std::endl;
+	std::cout << "double: " << d << std::endl;
+}
+
+void	Converter::convert_int( void )
+{
+	int	i;
+	try
+	{
+		i = static_cast<int>( std::stoi( _input ));
+	}
+	catch ( std::out_of_range & e )
+	{
+		std::cerr << "Exception caught: " << e.what() << std::endl;
+		std::cout << "Can't convert integer. Exiting ..." << std::endl;
+		exit(0);
+	}
+	float	f = static_cast<float>( i );
+	double	d = static_cast<double>( i );
+
+	if ( isprint( i ))
+		std::cout << "char: " << static_cast<char>( i ) << std::endl;
+	else
+		std::cout << "char: Non displayable" << std::endl;
+	std::cout << "int: " << i << std::endl;
+	std::cout.precision(1);
+	std::cout << std::fixed;
+	std::cout << "float: " << f << "f" <<std::endl;
+	std::cout << "double: " << d << std::endl;
+}
+
+void	Converter::convert_float( void )
+{
+	if ( _input == "-inff" || _input == "+inff" || _input == "nanf" )
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int : impossible" << std::endl;
+		std::cout << "float: " << _input << std::endl;
+		//std::cout << "double: " << d << std::endl;
+	}
+	float	f = static_cast<float>( std::stof( _input ));
+	int		i = static_cast<int>( f );
+	double	d = static_cast<double>( f );
+	std::cout << "int: " << i << std::endl;
+	std::cout.precision(1);
+	std::cout << std::fixed;
+	std::cout << "float: " << f << "f" <<std::endl;
+	std::cout << "double: " << d << std::endl;
+}
+
+void	Converter::convert_double( void )
+{
+	if ( _input == "-inf" || _input == "+inf" || _input == "nan" )
+	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int : impossible" << std::endl;
+		std::cout << "float: " << _input << "f" << std::endl;
+		std::cout << "double: " << _input << std::endl;
+	}
 }

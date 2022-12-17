@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 20:43:54 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:49:56 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,16 +158,11 @@ void	Converter::convert( int type )
  */
 void	Converter::convert_char( void )
 {
-	char	c = static_cast<char>( _input[0] );
-	int		i = static_cast<int>( c );
-	float	f = static_cast<float>( c );
-	double	d = static_cast<double>( c );
-	std::cout << "char: " << c << std::endl;
-	std::cout << "int: " << i << std::endl;
-	std::cout.precision(1);
-	std::cout << std::fixed;
-	std::cout << "float: " << f << "f" << std::endl;
-	std::cout << "double: " << d << std::endl;
+	_char = static_cast<char>( _input[0] );
+	_int = static_cast<int>( _char );
+	_float = static_cast<float>( _char );
+	_double	= static_cast<double>( _char );
+	show_all();
 }
 
 void	Converter::convert_int( void )
@@ -176,7 +171,8 @@ void	Converter::convert_int( void )
 	{
 		_int  = static_cast<int>( std::stoi( _input ));
 	}
-	catch ( std::out_of_range & e )
+	//catch ( std::out_of_range & e )
+	catch ( std::exception & e )
 	{
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 		std::cout << "Can't convert integer. Exiting ..." << std::endl;
@@ -199,7 +195,6 @@ void	Converter::convert_float( void )
 		std::cout << "double: " << _input.substr(0, _input.length() - 1) << std::endl;
 		return ;
 	}
-
 	try
 	{
 		_float = static_cast<float>( std::stof( _input ));

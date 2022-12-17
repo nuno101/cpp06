@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:37:04 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 15:21:15 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 17:21:01 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ class	Converter
 		Converter &operator=( const Converter &src );
 		void	run( void );
 		int		find_type ( void );
+		int		is_int( int len );
+		int		is_float_or_double( int len );
 		void	convert( int type );
 		void	convert_char( void );
 		void	convert_int( void );

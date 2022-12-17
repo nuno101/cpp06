@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 15:37:31 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 17:23:29 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,53 @@ void	Converter::run( void )
 	convert( type );
 }
 
-int		Converter::find_type( void )
+int		Converter::is_int( int len )
 {
 	int	i = 0;
+
+	if ( _input[0] == '-' )
+		i++;
+	while ( i < len )
+	{
+		if ( isdigit( _input[i]) ) 
+			i++;
+		else
+			return UNSUPPORTED ;
+	}
+	return INT ;
+}
+
+/*
+ * already validated:
+ * len > 1
+ * single dot in string
+ * last character is f
+ */
+int		Converter::is_float_or_double( int len )
+{
+	int	i = 0;
+
+	if ( _input[0] == '-' )
+		i++;
+	while ( i < len )
+	{
+		if ( _input[i] == '.' || isdigit( _input[i]) ) 
+			i++;
+		else if ( i == len - 1 && _input[i] == 'f' )
+			return FLOAT ;
+		else
+			return UNSUPPORTED ;
+	}
+	return DOUBLE ;
+}
+
+int		Converter::find_type( void )
+{
 	int	len = _input.length();
-	bool has_digits = false;
-	bool has_decimals = false;
 
 	if ( len == 0 )
 	{
-		std::cout << "Error: can't convert empty string" << std::endl;
+		std::cout << "Error: can't convert empty string.\nExiting..." << std::endl;
 		exit(0);
 	}
 	if ( len == 1 )
@@ -72,22 +109,18 @@ int		Converter::find_type( void )
 		return FLOAT ;
 	else if ( _input == "-inf" || _input == "+inf" || _input == "nan" )
 		return DOUBLE ;
-	while ( i < len )
+	// validate number of dots
+	std::size_t	found = _input.find(".");
+	if ( found == std::string::npos ) // no dots
 	{
-		if ( isdigit( _input[i]) )
-			has_digits = true;
-		else if ( _input[i] =='.' )
-		{
-			if ( has_decimals == false )
-				has_decimals = true;
-			else // found two dots
-				return UNSUPPORTED ;
-		}
-		i++;
+		return is_int( len ) ;
+	}	
+	if ( found == _input.rfind(".") ) // single dot in string 
+	{
+		return is_float_or_double( len ) ;
 	}
-	if (has_digits && !has_decimals)
-		return INT ;
-	return UNSUPPORTED ;
+	else
+		return UNSUPPORTED ;
 }
 
 void	Converter::convert( int type )
@@ -169,6 +202,8 @@ void	Converter::convert_int( void )
 
 void	Converter::convert_float( void )
 {
+	float	f;
+
 	if ( _input == "-inff" || _input == "+inff" || _input == "nanf" )
 	{
 		std::cout << "char: impossible" << std::endl;
@@ -179,7 +214,7 @@ void	Converter::convert_float( void )
 	}
 	try
 	{
-		float	f = static_cast<float>( std::stof( _input ));
+		f = static_cast<float>( std::stof( _input ));
 	}
 	catch ( std::out_of_range & e )
 	{
@@ -200,6 +235,7 @@ void	Converter::convert_float( void )
 
 void	Converter::convert_double( void )
 {
+	double	d;
 	if ( _input == "-inf" || _input == "+inf" || _input == "nan" )
 	{
 		std::cout << "char: impossible" << std::endl;
@@ -209,7 +245,7 @@ void	Converter::convert_double( void )
 	}
 	try
 	{
-		double d = static_cast<double>( std::stod( _input ));
+		d = static_cast<double>( std::stod( _input ));
 	}
 	catch ( std::out_of_range & e )
 	{

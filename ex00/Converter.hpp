@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:37:04 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/16 18:45:44 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 10:42:08 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,22 @@
 
 #include <iostream>
 
+enum types {
+	UNSUPPORTED = 0,
+	CHAR,
+	INT,
+	FLOAT,
+	DOUBLE
+};
+
 class	Converter
 {
 	private:
 		std::string	_input;
 		char		_char;
-		int			_int;
-		float		_float;
-		double		_double;
+//		int			_int;
+//		float		_float;
+//		double		_double;
 		
 	public:
 		Converter( std::string str);
@@ -30,6 +38,7 @@ class	Converter
 		Converter( const Converter &src );
 		Converter &operator=( const Converter &src );
 		void	run( void );
+		int		find_type ( void );
 		void	show_all( void );
 };
 

@@ -1,3 +1,6 @@
+*.swp
+ex00/convert
+
 # Prerequisites
 *.d
 

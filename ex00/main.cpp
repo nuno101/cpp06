@@ -9,5 +9,7 @@ int	main( int argc, char** argv )
 		return -1;
 	}
 	std::cout << "Parameter: " << argv[1] << std::endl;
+	Converter c( argv[1] );
+	c.run();
 	return 0 ;
 }

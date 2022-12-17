@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/17 17:23:29 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/17 19:02:54 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ Converter & Converter::operator=( const Converter &src )
 
 void	Converter::run( void )
 {
-	std::cout << "_input is: " << _input << std::endl;
+	if ( VERBOSE )
+		std::cout << "_input is: " << _input << std::endl;
 	int	type = find_type(); 
 	std::cout << "type is: " << type << std::endl;
 	convert( type );
@@ -112,13 +113,9 @@ int		Converter::find_type( void )
 	// validate number of dots
 	std::size_t	found = _input.find(".");
 	if ( found == std::string::npos ) // no dots
-	{
 		return is_int( len ) ;
-	}	
 	if ( found == _input.rfind(".") ) // single dot in string 
-	{
 		return is_float_or_double( len ) ;
-	}
 	else
 		return UNSUPPORTED ;
 }
@@ -128,7 +125,7 @@ void	Converter::convert( int type )
 	switch ( type )
 	{
 		case UNSUPPORTED:
-			std::cout << "Error: unsupported string" << std::endl;
+			std::cout << "Error: unsupported/ invalid string" << std::endl;
 			break;
 		case CHAR:
 			if ( VERBOSE )
@@ -222,10 +219,12 @@ void	Converter::convert_float( void )
 		std::cout << "Can't convert float. Exiting ..." << std::endl;
 		exit(0);
 	}
-	char    c = static_cast<char>( f );
 	int		i = static_cast<int>( f );
 	double	d = static_cast<double>( f );
-	std::cout << "char: " << c << std::endl;
+	if ( i == 0 )
+		std::cout << "char: Non displayable" << std::endl;
+	else
+		std::cout << "char: " << static_cast<char>( f ) << std::endl;
 	std::cout << "int: " << i << std::endl;
 	std::cout.precision(1);
 	std::cout << std::fixed;
@@ -253,10 +252,12 @@ void	Converter::convert_double( void )
 		std::cout << "Can't convert double. Exiting ..." << std::endl;
 		exit(0);
 	}
-	char    c = static_cast<char>( d );
 	int		i = static_cast<int>( d );
 	float	f = static_cast<float>( d );
-	std::cout << "char: " << c << std::endl;
+	if ( i == 0 )
+		std::cout << "char: Non displayable" << std::endl;
+	else
+		std::cout << "char: " << static_cast<char>( d ) << std::endl;
 	std::cout << "int: " << i << std::endl;
 	std::cout.precision(1);
 	std::cout << std::fixed;

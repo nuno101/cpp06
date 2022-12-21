@@ -6,10 +6,11 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:43:08 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/19 17:06:13 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/21 10:05:15 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits>
 #include "Converter.hpp"
 
 Converter::Converter( std::string str ) : _input( str )
@@ -44,7 +45,8 @@ void	Converter::run( void )
 	if ( VERBOSE )
 		std::cout << "_input is: " << _input << std::endl;
 	int	type = find_type(); 
-	std::cout << "type is: " << type << std::endl;
+	if ( VERBOSE )
+		std::cout << "type is: " << type << std::endl;
 	convert( type );
 }
 
@@ -219,6 +221,7 @@ void	Converter::convert_double( void )
 	{
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int : impossible" << std::endl;
+		//TODO: is this correct or should float be impossible?
 		std::cout << "float: " << _input << "f" << std::endl;
 		std::cout << "double: " << _input << std::endl;
 		return ;
@@ -244,13 +247,24 @@ void	Converter::convert_double( void )
 
 void	Converter::show_all( void )
 {
-	if ( !isprint( _int ))
+	if ( isprint( _int ))
+		std::cout << "char: " << static_cast<char>( _char ) << std::endl;
+	else if ( isascii( _int ))
 		std::cout << "char: Non displayable" << std::endl;
 	else
-		std::cout << "char: " << static_cast<char>( _char ) << std::endl;
-	std::cout << "int: " << _int << std::endl;
-	std::cout.precision(1);
-	std::cout << std::fixed;
-	std::cout << "float: " << _float << "f" <<std::endl;
+		std::cout << "char: Impossible" << std::endl;
+	if ( _float  > std::numeric_limits<int>::max() || _float < std::numeric_limits<int>::min())
+		std::cout << "int: Impossible" << std::endl;
+	else
+		std::cout << "int: " << _int << std::endl;
+	if ( _int * 1.0 == _float )
+	{
+		std::cout.precision(1);
+		std::cout << std::fixed;
+	}
+	if ( _double > std::numeric_limits<float>::max() || _double < std::numeric_limits<float>::min())
+		std::cout << "float: Impossible" << std::endl;
+	else
+		std::cout << "float: " << _float << "f" <<std::endl;
 	std::cout << "double: " << _double << std::endl;
 }

@@ -5,6 +5,7 @@ VERBOSE = 1
 CPP_FLAGS = -Wextra -Werror -Wall --std=c++98
 
 CPP_FILES = main.cpp Serialiser.cpp
+HPP_FILES = Serialiser.hpp
 
 O_FILES = $(CPP_FILES:%cpp=%o)
 
@@ -12,10 +13,10 @@ O_FILES = $(CPP_FILES:%cpp=%o)
 
 all: $(NAME)
 
-$(NAME): $(O_FILES)
+$(NAME): $(O_FILES) $(HPP_FILES)
 	clang++ $(CPP_FLAGS) $(O_FILES) -o $(NAME)
 
-$(O_FILES):
+$(O_FILES): $(HPP_FILES)
 	clang++ -c -D VERBOSE=$(VERBOSE) $(CPP_FLAGS) $(CPP_FILES)
 
 clean:

@@ -5,7 +5,7 @@ VERBOSE = 1
 CPP_FLAGS = -Wextra -Werror -Wall --std=c++98
 
 CPP_FILES = main.cpp Base.cpp
-CPP_FILES = Base.hpp
+HPP_FILES = Base.hpp
 
 O_FILES = $(CPP_FILES:%cpp=%o)
 

@@ -3,7 +3,6 @@
 
 int	main( void )
 {
-	std::cout << "Hello" << std::endl;
 	Data	ptr;
 	Data	*ptr2;
 	ptr.str = "test";

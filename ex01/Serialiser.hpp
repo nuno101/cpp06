@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 10:20:56 by nlouro            #+#    #+#             */
-/*   Updated: 2022/12/21 10:39:58 by nlouro           ###   ########.fr       */
+/*   Updated: 2022/12/21 11:43:47 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 
 typedef	struct Data
 {
-	std::string	name;
+	std::string	str;
 	int			nr;
+	float		flt;
 }	t_Data;
 
 class Serialiser

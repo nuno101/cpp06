@@ -1,5 +1,6 @@
 *.swp
 ex00/convert
+ex01/serialise
 
 # Prerequisites
 *.d
